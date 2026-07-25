@@ -1,11 +1,12 @@
 import "./App.css";
-import { ParentComponent } from "./components/state-second/ParentComponent";
 import { UserProfile } from "./components/state-third/UserProfile";
+import { TodoList } from "./components/state-third/TodoList";
 
 function App() {
   return (
     <>
       <UserProfile />
+      <TodoList />
     </>
   );
 }

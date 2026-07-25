@@ -1,12 +1,10 @@
 import "./App.css";
-import { PropsComponents } from "./components/props/PropsComponents";
-import { StateComponents } from "./components/state/StateComponents";
+import { ParentComponent } from "./components/state-second/ParentComponent";
 
 function App() {
   return (
     <>
-      <PropsComponents />
-      <StateComponents />
+      <ParentComponent />
     </>
   );
 }

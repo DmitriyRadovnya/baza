@@ -3,9 +3,7 @@ import { useState } from "react";
 export const Counter = ({ initialValue }) => {
   const [count, setCount] = useState(initialValue);
   const addFive = () => {
-    setCount(() => {
-      return count + 5;
-    });
+    setCount((prev) => prev + 5);
   };
   return (
     <>

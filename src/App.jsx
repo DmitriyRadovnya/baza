@@ -1,20 +1,8 @@
 import "./App.css";
-import { LifecycleComponent } from "./components/life-cycle/LifecycleComponent";
-import { FuncComponent } from "./components/life-cycle/FuncComponent";
+import { DogGallery } from "./components/life-cycle-second/DogGallery";
 
 function App() {
-  const user = {
-    email: "dima.didima@gmail.com",
-    password: "didima99",
-    name: "Dima",
-  };
-
-  return (
-    <>
-      <LifecycleComponent userData={user} />
-      <FuncComponent userData={user} />
-    </>
-  );
+  return <DogGallery />;
 }
 
 export default App;

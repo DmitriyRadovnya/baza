@@ -1,14 +1,18 @@
 import "./App.css";
-import { UserProfile } from "./components/state-third/UserProfile";
-import { TodoList } from "./components/state-third/TodoList";
-import { ShoppingCart } from "./components/state-third/ShoppingCart";
+import { LifecycleComponent } from "./components/life-cycle/LifecycleComponent";
+import { FuncComponent } from "./components/life-cycle/FuncComponent";
 
 function App() {
+  const user = {
+    email: "dima.didima@gmail.com",
+    password: "didima99",
+    name: "Dima",
+  };
+
   return (
     <>
-      <UserProfile />
-      <TodoList />
-      <ShoppingCart />
+      <LifecycleComponent userData={user} />
+      <FuncComponent userData={user} />
     </>
   );
 }

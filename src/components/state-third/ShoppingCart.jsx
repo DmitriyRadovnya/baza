@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { CartItem } from "./CartItem";
 
 export const ShoppingCart = () => {
@@ -7,11 +7,11 @@ export const ShoppingCart = () => {
     { id: 2, title: "Кепка", count: 2 },
   ]);
 
-  const deleteCartItem = (idForDeletion) => {
+  const deleteCartItem = useCallback((idForDeletion) => {
     setCart((prev) => prev.filter((item) => item.id !== idForDeletion));
-  };
+  }, []);
 
-  const addToCart = (idToAdd) => {
+  const addToCart = useCallback((idToAdd) => {
     setCart((prev) => {
       return prev.map((item) => {
         if (item.id === idToAdd) {
@@ -23,7 +23,7 @@ export const ShoppingCart = () => {
         return item;
       });
     });
-  };
+  }, []);
 
   const clearCart = () => setCart([]);
 

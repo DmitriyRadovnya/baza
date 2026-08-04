@@ -1,4 +1,7 @@
-export const CartItem = ({ id, title, count, deleteItem, addItem }) => {
+import { memo } from "react";
+
+export const CartItem = memo(({ id, title, count, deleteItem, addItem }) => {
+  console.log("ререндер");
   return (
     <li>
       <span>{title}</span>
@@ -7,4 +10,4 @@ export const CartItem = ({ id, title, count, deleteItem, addItem }) => {
       <button onClick={() => deleteItem(id)}>Удалить</button>
     </li>
   );
-};
+});

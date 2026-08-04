@@ -1,36 +1,33 @@
 import "./App.css";
-import { useRef, useState } from "react";
-import { List } from "./components/events/List";
+import { useCallback, useEffect, useState } from "react";
+import { SearchInput } from "./components/optimization/SearchInput";
+import { ItemList } from "./components/optimization/ItemList";
+import { CounterButton } from "./components/optimization/CounterButton";
+import { users } from "./components/optimization/users";
 
 function App() {
-  const [array, setArray] = useState([]);
-  const [value, setValue] = useState("");
-  const [arrIds, setArrIds] = useState(0);
-  const inputRef = useRef(null);
+  const [count, setCount] = useState(0);
+  const [inputValue, setInputValue] = useState("");
+  const [userList, setUserList] = useState(users);
 
-  const submitHandler = (e) => {
-    e.preventDefault();
-    if (value === "") return;
-    setArray((prev) => {
-      return [...prev, { value, id: arrIds }];
-    });
-    setArrIds((p) => p + 1);
-    setValue("");
-  };
+  const inputHandler = useCallback(
+    (value) => {
+      setInputValue(value);
+    },
+    [inputValue],
+  );
+
+  const buttonHandler = useCallback(() => {
+    setCount((p) => p + 1);
+  }, []);
+
+  console.log("App рендер");
 
   return (
     <>
-      <form onSubmit={submitHandler}>
-        <input
-          ref={inputRef}
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <button>Добавить в список</button>
-      </form>
-      <button onClick={() => inputRef.current.focus()}>Фокус на инпут</button>
-      <List dataArr={array} />
+      <CounterButton count={count} setCount={buttonHandler} />
+      <SearchInput inputValue={inputValue} inputHandler={inputHandler} />
+      <ItemList data={userList} inputValue={inputValue} />
     </>
   );
 }

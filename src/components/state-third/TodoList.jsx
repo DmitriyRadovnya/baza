@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { TaskItem } from "./TaskItem";
 import { randomTask } from "../../utils/randomTask";
 
 export const TodoList = () => {
@@ -20,7 +21,7 @@ export const TodoList = () => {
     <>
       <ul>
         {tasks.map((item, i) => (
-          <li key={i}>{item}</li>
+          <TaskItem key={i} item={item} />
         ))}
       </ul>
       <button onClick={addTask}>Добавить задачу</button>

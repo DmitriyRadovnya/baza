@@ -1,14 +1,18 @@
 import "./App.css";
-import { UserProfile } from "./components/state-third/UserProfile";
-import { TodoList } from "./components/state-third/TodoList";
-import { ShoppingCart } from "./components/state-third/ShoppingCart";
+import { ThemeProvider } from "./components/context/ThemeContext";
+import { LanguageProvider } from "./components/context/LanguageContext";
+import { UserProfile } from "./components/context/UserProfile";
+import { Header } from "./components/context/Header";
 
 function App() {
   return (
     <>
-      <UserProfile />
-      <TodoList />
-      <ShoppingCart />
+      <ThemeProvider>
+        <LanguageProvider>
+          <Header />
+          <UserProfile />
+        </LanguageProvider>
+      </ThemeProvider>
     </>
   );
 }

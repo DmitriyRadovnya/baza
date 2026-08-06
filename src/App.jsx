@@ -4,6 +4,9 @@ import { SearchInput } from "./components/optimization/SearchInput";
 import { ItemList } from "./components/optimization/ItemList";
 import { CounterButton } from "./components/optimization/CounterButton";
 import { users } from "./components/optimization/users";
+import { withRenderTracker } from "./components/optimization/HOC/hoc";
+
+const WrappedSearchInput = withRenderTracker(SearchInput);
 
 function App() {
   const [count, setCount] = useState(0);
@@ -26,7 +29,7 @@ function App() {
   return (
     <>
       <CounterButton count={count} setCount={buttonHandler} />
-      <SearchInput inputValue={inputValue} inputHandler={inputHandler} />
+      <WrappedSearchInput inputValue={inputValue} inputHandler={inputHandler} />
       <ItemList data={userList} inputValue={inputValue} />
     </>
   );

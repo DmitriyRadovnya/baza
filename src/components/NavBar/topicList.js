@@ -1,0 +1,17 @@
+export const topicList = [
+  { name: "Project structure", link: "/project-structure" },
+  { name: "Virtual DOM", link: "/virtual-dom" },
+  { name: "Components", link: "/components" },
+  { name: "Props", link: "/props" },
+  { name: "State (useState)", link: "/state" },
+  { name: "LifeCycle (useEffect)", link: "/lifecycle" },
+  { name: "Events", link: "/events" },
+  { name: "Refs, Fragment, key", link: "/refs-fragment-key" },
+  { name: "React.memo, useMemo", link: "/react-memo" },
+  { name: "useCallback", link: "/usecallback" },
+  { name: "Context (useContext)", link: "/context" },
+  { name: "React Router", link: "/react-router" },
+  { name: "Forms", link: "/forms" },
+  { name: "STORAGEs", link: "/storages" },
+  { name: "HOC", link: "/hoc" },
+];

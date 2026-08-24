@@ -9,7 +9,7 @@ export const Header = () => {
   const navigate = useNavigate();
 
   return (
-    <AppBar position="sticky" color="transparent" sx={{ borderRadius: 2 }}>
+    <AppBar position="relative" color="transparent" sx={{ borderRadius: 2 }}>
       <Toolbar sx={{ justifyContent: "space-between" }}>
         <Box
           sx={{ display: "flex", alignItems: "center", cursor: "pointer" }}

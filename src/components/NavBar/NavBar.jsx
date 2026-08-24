@@ -1,25 +1,25 @@
 import { topicList } from "./topicList";
-import { Box } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { NavButton } from "../shared/NavButton";
 
 export const NavBar = () => {
   return (
-    <Box
+    <Grid
+      container
       component="aside"
+      spacing={1}
+      columns={1}
       sx={{
-        width: "20%",
+        width: 0.18,
+        maxHeight: 5,
         p: 1,
-        display: "flex",
-        flexDirection: "columns",
-        flexWrap: "wrap",
-        gap: 1,
       }}
     >
       {topicList.map(({ name, link }) => (
-        <NavButton key={link} to={link}>
-          {name}
-        </NavButton>
+        <Grid key={link} size={3} sx={{ m: 0 }}>
+          <NavButton to={link}>{name}</NavButton>
+        </Grid>
       ))}
-    </Box>
+    </Grid>
   );
 };

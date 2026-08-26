@@ -1,7 +1,7 @@
 import { SectionTitle } from "../shared/SectionTitle";
 import { CodeBlock } from "../shared/CodeBlock";
 import { TextBlock } from "../shared/TextBlock";
-import { packageJSON, structure } from "./codeFragments/project-structure";
+import { packageJSON, structure } from "./pages-data/project-structure";
 
 export const ProjectStructure = () => {
   return (

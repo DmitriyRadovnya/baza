@@ -1,12 +1,12 @@
 import { SectionTitle } from "../shared/SectionTitle";
 import { TextBlock } from "../shared/TextBlock";
 import { CodeBlock } from "../shared/CodeBlock";
-import { createContext, provider, themeToggler } from "./codeFragments/context";
+import { createContext, provider, themeToggler } from "./pages-data/context";
 
 export const Context = () => {
   return (
     <>
-      <SectionTitle icon="🎈">
+      <SectionTitle variant="h5" icon="🎈">
         Управление глобальным состоянием с использованием Context и useContext
       </SectionTitle>
       <TextBlock>

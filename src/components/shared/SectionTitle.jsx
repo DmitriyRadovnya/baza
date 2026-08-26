@@ -1,10 +1,10 @@
 import { Typography } from "@mui/material";
 
-export const SectionTitle = ({ children, icon }) => (
+export const SectionTitle = ({ children, icon, variant = "h6" }) => (
   <Typography
-    variant="h6"
+    variant={variant}
     component="h2"
-    sx={{ mt: 4, mb: 2, fontWeight: 700 }}
+    sx={{ mt: 3, mb: 2, fontWeight: 700 }}
   >
     {icon ? `${icon} ` : ""}
     {children}

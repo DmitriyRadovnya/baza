@@ -6,7 +6,7 @@ import {
   codeSimple,
   codeDestructuring,
   codeClassComponent,
-} from "./codeFragments/props";
+} from "./pages-data/props";
 
 export const Props = () => {
   return (

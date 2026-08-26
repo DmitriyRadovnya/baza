@@ -1,5 +1,5 @@
+import { Box } from "@mui/material";
 import { CodeBlock } from "../shared/CodeBlock";
-import { Container, Box } from "@mui/material";
 import { SectionTitle } from "../shared/SectionTitle";
 import { TextBlock } from "../shared/TextBlock";
 import {
@@ -10,7 +10,7 @@ import {
 
 export const Props = () => {
   return (
-    <Container maxWidth="xl" sx={{ py: 4, textAlign: "start" }}>
+    <>
       <SectionTitle icon="🎃">Что такое пропсы и зачем они нужны</SectionTitle>
       <TextBlock>
         Пропсы (сокращение от properties) - это данные, которые передаются в
@@ -97,6 +97,6 @@ export const Props = () => {
           </strong>
         </TextBlock>
       </Box>
-    </Container>
+    </>
   );
 };

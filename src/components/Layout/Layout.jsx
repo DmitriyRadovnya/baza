@@ -1,7 +1,7 @@
 import { Header } from "../header/Header";
 import { NavBar } from "../NavBar/NavBar";
 import { Outlet } from "react-router";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 
 export const Layout = () => {
   return (
@@ -9,9 +9,13 @@ export const Layout = () => {
       <Header />
       <Box sx={{ display: "flex" }}>
         <NavBar />
-        <Box component="main" sx={{ flexGrow: 1 }}>
+        <Container
+          component="main"
+          maxWidth="xl"
+          sx={{ py: 4, flexGrow: 1, textAlign: "start", margin: 0 }}
+        >
           <Outlet />
-        </Box>
+        </Container>
       </Box>
     </>
   );

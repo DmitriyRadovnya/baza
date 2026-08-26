@@ -1,5 +1,5 @@
 import { topicList } from "./topicList";
-import { Box, Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import { NavButton } from "../shared/NavButton";
 
 export const NavBar = () => {
@@ -10,6 +10,7 @@ export const NavBar = () => {
       spacing={1}
       columns={1}
       sx={{
+        minWidth: 0.18,
         width: 0.18,
         maxHeight: 5,
         p: 1,

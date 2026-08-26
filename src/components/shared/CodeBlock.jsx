@@ -5,7 +5,6 @@ import { javascript } from "@codemirror/lang-javascript";
 import { json } from "@codemirror/lang-json";
 import { oneDark } from "@codemirror/theme-one-dark";
 
-// маппинг языка -> расширение CodeMirror
 const languageExtensions = {
   javascript: () => javascript(),
   jsx: () => javascript({ jsx: true }),
@@ -24,7 +23,6 @@ export const CodeBlock = ({ code, language = "javascript" }) => {
         basicSetup,
         lang(),
         oneDark,
-        // ключевая настройка — отключаем редактирование
         EditorView.editable.of(false),
         EditorView.theme({
           "&": { height: "auto" },
@@ -41,7 +39,6 @@ export const CodeBlock = ({ code, language = "javascript" }) => {
       parent: containerRef.current,
     });
 
-    // обязательная очистка при размонтировании
     return () => view.destroy();
   }, [code, language]);
 

@@ -1,7 +1,6 @@
 import { SectionTitle } from "../shared/SectionTitle";
 import { TextBlock } from "../shared/TextBlock";
 import { CodeBlock } from "../shared/CodeBlock";
-import { NoteBlock } from "../shared/NoteBlock";
 import * as lifeCycle from "./pages-data/life-cycle";
 
 export const LifeCycle = () => {

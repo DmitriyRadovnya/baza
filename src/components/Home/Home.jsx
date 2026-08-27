@@ -92,7 +92,6 @@ export const Home = () => {
           <Grid size={5} xs={12} sm={6} md={4} key={tool.name}>
             <Card
               sx={{
-                // height: "100%",
                 bgcolor: theme.palette.background.paper,
                 border: "1px solid",
                 borderColor: theme.palette.divider,

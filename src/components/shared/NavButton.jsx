@@ -1,7 +1,8 @@
 import { Button } from "@mui/material";
+import { memo } from "react";
 import { NavLink } from "react-router";
 
-export const NavButton = ({ children, to }) => {
+export const NavButton = memo(({ children, to }) => {
   return (
     <Button
       component={NavLink}
@@ -19,4 +20,4 @@ export const NavButton = ({ children, to }) => {
       {children}
     </Button>
   );
-};
+});

@@ -1,8 +1,9 @@
 import { topicList } from "./topicList";
 import { Grid } from "@mui/material";
 import { NavButton } from "../shared/NavButton";
+import { memo } from "react";
 
-export const NavBar = ({ setCurrentPage }) => {
+export const NavBar = memo(({ setCurrentPage }) => {
   return (
     <Grid
       container
@@ -28,4 +29,4 @@ export const NavBar = ({ setCurrentPage }) => {
       ))}
     </Grid>
   );
-};
+});

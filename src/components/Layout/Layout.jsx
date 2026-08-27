@@ -9,20 +9,27 @@ export const Layout = () => {
   const { pages, toPrevPage, toNextPage, setCurrentPage } = usePagination();
   return (
     <>
-      <Header />
+      <Header setCurrentPage={setCurrentPage} />
       <Box sx={{ display: "flex" }}>
         <NavBar setCurrentPage={setCurrentPage} />
         <Container
           component="main"
           maxWidth="xl"
-          sx={{ py: 4, flexGrow: 1, textAlign: "start", margin: 0 }}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            py: 4,
+            flexGrow: 1,
+            textAlign: "start",
+            margin: 0,
+          }}
         >
+          <Outlet />
           <PageControl
             pages={pages}
             toPrevPage={toPrevPage}
             toNextPage={toNextPage}
           />
-          <Outlet />
         </Container>
       </Box>
     </>

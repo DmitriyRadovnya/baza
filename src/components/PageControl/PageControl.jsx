@@ -1,22 +1,31 @@
 import { ButtonGroup, Button } from "@mui/material";
-import { topicList } from "../NavBar/topicList";
 
 export const PageControl = ({ pages, toPrevPage, toNextPage }) => {
+  const handlePagination = (direction) => {
+    if (direction === "prev") {
+      toPrevPage();
+    }
+    if (direction === "next") {
+      toNextPage();
+    }
+    scroll(0, 0);
+  };
+
   return (
-    <ButtonGroup variant="text">
+    <ButtonGroup variant="text" sx={{ alignSelf: "center" }}>
       <Button
-        onClick={toPrevPage}
-        disabled={pages.prev < 1 ? true : false}
+        onClick={() => handlePagination("prev")}
+        disabled={pages.prev === null}
         sx={{ textTransform: "none" }}
       >
-        Пред. тема
+        Назад
       </Button>
       <Button
-        onClick={toNextPage}
-        disabled={pages.next > topicList.length ? true : false}
+        onClick={() => handlePagination("next")}
+        disabled={pages.next === null}
         sx={{ textTransform: "none" }}
       >
-        След. тема
+        Далее
       </Button>
     </ButtonGroup>
   );

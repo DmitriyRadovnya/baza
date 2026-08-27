@@ -24,7 +24,16 @@ export const usePagination = () => {
       };
     });
   };
+  const setCurrentPage = (pageId) => {
+    setPages({
+      prev: pageId - 1 || null,
+      current: pageId,
+      next: pageId + 1 < topicList.length ? pageId + 1 : null,
+    });
+  };
+
   useEffect(() => {
+    console.log(pages.current);
     if (pages.current === 0) {
       navigate("/");
     }
@@ -32,5 +41,5 @@ export const usePagination = () => {
     navigate(currentLink?.link);
   }, [pages]);
 
-  return [pages, toPrevPage, toNextPage];
+  return { pages, toPrevPage, toNextPage, setCurrentPage };
 };

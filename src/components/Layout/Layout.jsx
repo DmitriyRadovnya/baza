@@ -3,26 +3,25 @@ import { NavBar } from "../NavBar/NavBar";
 import { PageControl } from "../PageControl/PageControl";
 import { Outlet } from "react-router";
 import { Box, Container } from "@mui/material";
-import { useEffect, useState } from "react";
+import { usePagination } from "../usePagination/usePagination";
 
 export const Layout = () => {
-  const [page, setPage] = useState();
-  useEffect(() => {
-    const page = localStorage.getItem("pageNum");
-    if (page) setPage(page);
-    else setPage(0);
-  }, []);
+  const { pages, toPrevPage, toNextPage, setCurrentPage } = usePagination();
   return (
     <>
       <Header />
       <Box sx={{ display: "flex" }}>
-        <NavBar />
+        <NavBar setCurrentPage={setCurrentPage} />
         <Container
           component="main"
           maxWidth="xl"
           sx={{ py: 4, flexGrow: 1, textAlign: "start", margin: 0 }}
         >
-          <PageControl />
+          <PageControl
+            pages={pages}
+            toPrevPage={toPrevPage}
+            toNextPage={toNextPage}
+          />
           <Outlet />
         </Container>
       </Box>

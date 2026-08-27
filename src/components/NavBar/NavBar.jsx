@@ -2,7 +2,7 @@ import { topicList } from "./topicList";
 import { Grid } from "@mui/material";
 import { NavButton } from "../shared/NavButton";
 
-export const NavBar = () => {
+export const NavBar = ({ setCurrentPage }) => {
   return (
     <Grid
       container
@@ -16,8 +16,13 @@ export const NavBar = () => {
         p: 1,
       }}
     >
-      {topicList.map(({ name, link }) => (
-        <Grid key={link} size={3} sx={{ m: 0 }}>
+      {topicList.map(({ id, name, link }) => (
+        <Grid
+          key={link}
+          size={3}
+          sx={{ m: 0 }}
+          onClick={() => setCurrentPage(id)}
+        >
           <NavButton to={link}>{name}</NavButton>
         </Grid>
       ))}

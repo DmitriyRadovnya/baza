@@ -1,8 +1,13 @@
 import { Box, TextField, Button } from "@mui/material";
 import { useState } from "react";
 
-export const CreateTask = () => {
+export const CreateTask = ({ addTask }) => {
   const [value, setValue] = useState("");
+  const handleCreateTask = () => {
+    addTask(value);
+    setValue("");
+  };
+
   return (
     <Box
       component="form"
@@ -17,7 +22,11 @@ export const CreateTask = () => {
         value={value}
         onChange={(e) => setValue(e.target.value)}
       />
-      <Button variant="contained" sx={{ textTransform: "none" }}>
+      <Button
+        variant="contained"
+        sx={{ textTransform: "none" }}
+        onClick={handleCreateTask}
+      >
         Добавить
       </Button>
     </Box>

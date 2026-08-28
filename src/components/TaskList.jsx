@@ -6,13 +6,15 @@ export const TaskList = ({ tasks, setComplete, editTask, deleteTask }) => {
     <List>
       {tasks.map((task) => {
         return (
-          <TaskItem
-            key={task.id}
-            task={task}
-            setComplete={setComplete}
-            editTask={editTask}
-            deleteTask={deleteTask}
-          />
+          task.isVisible && (
+            <TaskItem
+              key={task.id}
+              task={task}
+              setComplete={setComplete}
+              editTask={editTask}
+              deleteTask={deleteTask}
+            />
+          )
         );
       })}
     </List>

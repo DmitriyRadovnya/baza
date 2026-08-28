@@ -6,15 +6,15 @@ import {
   RadioGroup,
 } from "@mui/material";
 
-export const FilterControl = () => {
+export const FilterControl = ({ filterMode, setFilterMode }) => {
   return (
     <FormControl>
       <FormLabel>Показать:</FormLabel>
       <RadioGroup
         row
         defaultValue="all"
-        //   value={}
-        //   onChange={}
+        value={filterMode}
+        onChange={(e) => setFilterMode(e.target.value)}
         sx={{ display: "flex", justifyContent: "center" }}
       >
         <FormControlLabel value="all" label="Все" control={<Radio />} />

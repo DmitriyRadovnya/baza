@@ -7,13 +7,12 @@ import "./App.css";
 
 const Public = () => {
   const isAuth = Boolean(localStorage.getItem("token"));
-  console.log(isAuth);
   return isAuth ? <Navigate to="/" replace /> : <Outlet />;
 };
 
 const Protected = () => {
   const isAuth = Boolean(localStorage.getItem("token"));
-  return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
+  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 function App() {

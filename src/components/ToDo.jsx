@@ -3,19 +3,25 @@ import { CreateTask } from "./CreateTask";
 import { TaskList } from "./TaskList";
 import { FilterControl } from "./FilterControl";
 import { Box, Button } from "@mui/material";
+import { useToDoAPI } from "../hooks/useToDoApi";
 
 export const ToDo = () => {
   const [filterMode, setFilterMode] = useState("all");
   const [tasks, setTasks] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
+  const { getTasks } = useToDoAPI();
 
   useEffect(() => {
-    try {
-      const savedTasks = localStorage.getItem("tasks");
-      if (savedTasks) setTasks(JSON.parse(savedTasks));
-    } catch (e) {
-      console.error(e);
-    }
+    const loadTasks = async () => {
+      try {
+        const response = await getTasks();
+        if (response) setTasks(response.data);
+      } catch (e) {
+        console.error(e);
+      }
+    };
+    loadTasks();
+
     setHasLoaded(true);
   }, []);
 

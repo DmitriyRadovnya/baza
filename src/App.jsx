@@ -63,7 +63,6 @@ function App() {
     setTasks((prev) => prev.filter((task) => !task.isDone));
   };
 
-  console.log(tasks);
   return (
     <>
       <Header />

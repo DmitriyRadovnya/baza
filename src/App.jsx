@@ -4,45 +4,28 @@ import { Header } from "./components/Header";
 import { CreateTask } from "./components/CreateTask";
 import { TaskList } from "./components/TaskList";
 import { FilterControl } from "./components/FilterControl";
+import { Box, Button } from "@mui/material";
 
 function App() {
   const [filterMode, setFilterMode] = useState("all");
-  const [tasks, setTasks] = useState([
-    {
-      id: 1,
-      title: "Купить хлеб",
-      isDone: false,
-      isVisible: true,
-    },
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const [hasLoaded, setHasLoaded] = useState(false);
 
   useEffect(() => {
-    if (filterMode === "all") {
-      setTasks((prev) =>
-        prev.map((task) => {
-          return { ...task, isVisible: true };
-        }),
-      );
+    try {
+      const savedTasks = localStorage.getItem("tasks");
+      if (savedTasks) setTasks(JSON.parse(savedTasks));
+    } catch (e) {
+      console.error(e);
     }
-    if (filterMode === "active") {
-      setTasks((prev) =>
-        prev.map((task) =>
-          !task.isDone
-            ? { ...task, isVisible: true }
-            : { ...task, isVisible: false },
-        ),
-      );
+    setHasLoaded(true);
+  }, []);
+
+  useEffect(() => {
+    if (hasLoaded) {
+      localStorage.setItem("tasks", JSON.stringify(tasks));
     }
-    if (filterMode === "complete") {
-      setTasks((prev) =>
-        prev.map((task) =>
-          task.isDone
-            ? { ...task, isVisible: true }
-            : { ...task, isVisible: false },
-        ),
-      );
-    }
-  }, [filterMode]);
+  }, [tasks, hasLoaded]);
 
   const addTask = (title) => {
     setTasks((prev) => [
@@ -76,11 +59,32 @@ function App() {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
+  const clearCompletedTasks = () => {
+    setTasks((prev) => prev.filter((task) => !task.isDone));
+  };
+
+  console.log(tasks);
   return (
     <>
       <Header />
       <CreateTask addTask={addTask} />
-      <FilterControl filterMode={filterMode} setFilterMode={setFilterMode} />
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          gap: 5,
+        }}
+      >
+        <FilterControl filterMode={filterMode} setFilterMode={setFilterMode} />
+        <Button
+          variant="contained"
+          onClick={clearCompletedTasks}
+          sx={{ textTransform: "none" }}
+        >
+          Удалить выполненные
+        </Button>
+      </Box>
       <TaskList
         tasks={tasks}
         filterMode={filterMode}

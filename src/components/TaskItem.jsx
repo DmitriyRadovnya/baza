@@ -12,7 +12,7 @@ import { useRef, useState, useEffect } from "react";
 import { useToDoAPI } from "../hooks/useToDoApi";
 
 export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
-  const { removeTask, changeTaskStatus } = useToDoAPI();
+  const { removeTask, changeTaskStatus, updateTitle } = useToDoAPI();
   const [status, setStatus] = useState(task.completed);
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(task.title);
@@ -36,7 +36,7 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
     }
   };
 
-  const handleEditTask = () => {
+  const handleEditTask = async () => {
     if (!editMode) {
       setTitle(task.title);
       setError(null);
@@ -48,9 +48,16 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
       setError("У задачи должно быть описание");
       return;
     }
-    editTask(task.id, title.trim());
-    setEditMode(false);
-    setError(null);
+    try {
+      const status = await updateTitle(task.id, title.trim());
+      if (status === 200) {
+        editTask(task.id, title.trim());
+        setEditMode(false);
+        setError(null);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEsc = (e) => {

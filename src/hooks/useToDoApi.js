@@ -46,6 +46,13 @@ export const useToDoAPI = () => {
     }
   };
 
+  const updateTitle = async (id, newTitle) => {
+    try {
+      const res = await api.patch(`/api/todos/${id}`, { title: newTitle });
+      return res.status;
+    } catch (error) {}
+  };
+
   const removeTask = async (id) => {
     try {
       const response = await api.delete(`/api/todos/${id}`);
@@ -53,5 +60,13 @@ export const useToDoAPI = () => {
     } catch (error) {}
   };
 
-  return { login, signUp, createTask, changeTaskStatus, removeTask, getTasks };
+  return {
+    login,
+    signUp,
+    createTask,
+    updateTitle,
+    changeTaskStatus,
+    removeTask,
+    getTasks,
+  };
 };

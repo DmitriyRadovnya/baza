@@ -5,17 +5,24 @@ import {
   FormControlLabel,
   FormHelperText,
   FormLabel,
+  IconButton,
+  InputAdornment,
   Radio,
   RadioGroup,
   TextField,
+  Typography,
+  Link as MuiLink,
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validation/authSchemas";
 import { useToDoAPI } from "../hooks/useToDoApi";
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useState } from "react";
 
 export const RegisterPage = () => {
+  const [showPass, setShowPass] = useState(false);
   const { signUp } = useToDoAPI();
   const nav = useNavigate();
   const {
@@ -34,6 +41,11 @@ export const RegisterPage = () => {
       age: "",
     },
   });
+
+  const togglePasswordVisibility = () => {
+    setShowPass((p) => !p);
+  };
+
   const onSubmit = async (data) => {
     const user = {
       email: data.email,
@@ -53,13 +65,17 @@ export const RegisterPage = () => {
       onSubmit={handleSubmit(onSubmit)}
       noValidate
       sx={{
+        width: "500px",
         p: 5,
         display: "flex",
+        flexDirection: "column",
+        alignSelf: "center",
         flexWrap: "wrap",
         justifyContent: "center",
         gap: 2,
       }}
     >
+      <FormLabel>Регистрация</FormLabel>
       <TextField
         name="login"
         label="Логин"
@@ -79,10 +95,24 @@ export const RegisterPage = () => {
       <TextField
         name="password"
         label="Пароль"
+        type={showPass ? "text" : "password"}
         placeholder="Придумайте пароль"
         {...register("password")}
         error={!!errors.password}
         helperText={errors.password?.message}
+        sx={{ width: "100%" }}
+        slotProps={{
+          input: {
+            endAdornment:
+              watch("password")?.length > 0 ? (
+                <InputAdornment position="end">
+                  <IconButton onClick={togglePasswordVisibility} edge="end">
+                    {showPass ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ) : null,
+          },
+        }}
       />
       <Controller
         name="gender"
@@ -116,6 +146,12 @@ export const RegisterPage = () => {
         helperText={errors.age?.message}
       />
       <Button type="submit">Зарегистрироваться</Button>
+      <Typography>
+        Уже есть аккаунт?{" "}
+        <MuiLink component={Link} to="/login">
+          Вход
+        </MuiLink>
+      </Typography>
     </Box>
   );
 };

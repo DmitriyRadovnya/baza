@@ -3,10 +3,16 @@ import api from "../api/todoAPI";
 export const useToDoAPI = () => {
   const login = async (userData) => {
     try {
-      const response = await api.post("/api/auth/login", {
-        email: userData.email,
-        password: userData.password,
-      });
+      const response = await api.post("/api/auth/login", { ...userData });
+      return response.data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const signUp = async (userData) => {
+    try {
+      const response = await api.post("/api/auth/register", { ...userData });
       return response.data;
     } catch (error) {
       console.log(error);
@@ -22,5 +28,5 @@ export const useToDoAPI = () => {
     }
   };
 
-  return { login, getTasks };
+  return { login, signUp, getTasks };
 };

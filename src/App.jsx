@@ -12,7 +12,7 @@ const Public = () => {
 
 const Protected = () => {
   const isAuth = Boolean(localStorage.getItem("token"));
-  return isAuth ? <Outlet /> : <Navigate to="/login" replace />;
+  return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
 };
 
 function App() {

@@ -1,10 +1,25 @@
-import { Box, Button, TextField } from "@mui/material";
-import { useForm } from "react-hook-form";
+import {
+  Box,
+  Button,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "../validation/registerSchema";
+import { registerSchema } from "../validation/authSchemas";
+import { useToDoAPI } from "../hooks/useToDoApi";
+import { useNavigate } from "react-router";
 
 export const RegisterPage = () => {
+  const { signUp } = useToDoAPI();
+  const nav = useNavigate();
   const {
+    control,
     watch,
     handleSubmit,
     register,
@@ -19,8 +34,18 @@ export const RegisterPage = () => {
       age: "",
     },
   });
-  const onSubmit = () => {
-    console.log("submit");
+  const onSubmit = async (data) => {
+    const user = {
+      email: data.email,
+      password: data.password,
+      name: data.login,
+    };
+    const token = await signUp(user);
+    console.log(token);
+    if (token.access_token) {
+      localStorage.setItem("token", JSON.stringify(token));
+      nav("/");
+    }
   };
   return (
     <Box
@@ -59,10 +84,33 @@ export const RegisterPage = () => {
         error={!!errors.password}
         helperText={errors.password?.message}
       />
+      <Controller
+        name="gender"
+        control={control}
+        render={({ field, fieldState: { error } }) => (
+          <FormControl component="fieldset" error={!!error}>
+            <FormLabel component="legend">Выберите пол</FormLabel>
+            <RadioGroup {...field} row>
+              <FormControlLabel
+                value="male"
+                control={<Radio />}
+                label="Мужской"
+              />
+              <FormControlLabel
+                value="female"
+                control={<Radio />}
+                label="Женский"
+              />
+            </RadioGroup>
+            {error && <FormHelperText>{error.message}</FormHelperText>}
+          </FormControl>
+        )}
+      />
       <TextField
         name="age"
         label="Возраст"
         placeholder="Введите возраст"
+        type="number"
         {...register("age")}
         error={!!errors.age}
         helperText={errors.age?.message}

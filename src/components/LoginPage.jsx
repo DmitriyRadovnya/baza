@@ -1,7 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../validation/registerSchema";
+import { loginSchema } from "../validation/authSchemas";
 import { useToDoAPI } from "../hooks/useToDoApi";
 import { useNavigate } from "react-router";
 
@@ -22,7 +22,7 @@ export const LoginPage = () => {
   });
   const onSubmit = async (data) => {
     const token = await login(data);
-    if (token) {
+    if (token.access_token) {
       localStorage.setItem("token", JSON.stringify(token));
       nav("/");
     }

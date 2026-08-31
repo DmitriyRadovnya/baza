@@ -4,12 +4,13 @@ import { TaskList } from "./TaskList";
 import { FilterControl } from "./FilterControl";
 import { Box, Button } from "@mui/material";
 import { useToDoAPI } from "../hooks/useToDoApi";
+import { idID } from "@mui/material/locale";
 
 export const ToDo = () => {
   const [filterMode, setFilterMode] = useState("all");
   const [tasks, setTasks] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
-  const { getTasks } = useToDoAPI();
+  const { getTasks, removeTask } = useToDoAPI();
 
   useEffect(() => {
     const loadTasks = async () => {
@@ -31,13 +32,13 @@ export const ToDo = () => {
     }
   }, [tasks, hasLoaded]);
 
-  const addTask = (title) => {
+  const addTask = ({ id, title, completed }) => {
     setTasks((prev) => [
       ...prev,
       {
-        id: crypto.randomUUID(),
+        id,
         title,
-        isDone: false,
+        completed,
         isVisible: true,
       },
     ]);
@@ -46,7 +47,7 @@ export const ToDo = () => {
   const setComplete = (id) => {
     setTasks((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, isDone: !item.isDone } : item,
+        item.id === id ? { ...item, completed: !item.completed } : item,
       ),
     );
   };
@@ -63,8 +64,18 @@ export const ToDo = () => {
     setTasks((prev) => prev.filter((task) => task.id !== id));
   };
 
-  const clearCompletedTasks = () => {
-    setTasks((prev) => prev.filter((task) => !task.isDone));
+  const clearCompletedTasks = async () => {
+    const taskForClear = tasks.filter((task) => task.completed);
+    taskForClear.forEach(async ({ id }) => {
+      try {
+        const res = await removeTask(id);
+        if (res === 204) {
+          deleteTask(id);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    });
   };
 
   return (

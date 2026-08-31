@@ -9,8 +9,11 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
 import { useRef, useState, useEffect } from "react";
+import { useToDoAPI } from "../hooks/useToDoApi";
 
 export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
+  const { removeTask, changeTaskStatus } = useToDoAPI();
+  const [status, setStatus] = useState(task.completed);
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(task.title);
   const [error, setError] = useState(null);
@@ -21,8 +24,16 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
       editInputRef.current?.focus();
     }
   }, [editMode]);
-  const handleComplete = () => {
-    setComplete(task.id);
+  const handleComplete = async () => {
+    try {
+      const res = await changeTaskStatus(task.id);
+      if (res.status === 200) {
+        setComplete(task.id);
+        setStatus((p) => !p);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditTask = () => {
@@ -53,6 +64,17 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
     }
   };
 
+  const handleRemoveTask = async () => {
+    try {
+      const deleteStatus = await removeTask(task.id);
+      if (deleteStatus === 204) {
+        deleteTask(task.id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleClickOut = (e) => {
     if (e.relatedTarget && e.relatedTarget.closest("input[type=checkbox]")) {
       return;
@@ -64,11 +86,9 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
 
   return (
     <ListItem>
-      <Checkbox checked={task.isDone} onChange={handleComplete} />
+      <Checkbox checked={status} onChange={handleComplete} />
       {!editMode ? (
-        <ListItemText
-          sx={{ textDecoration: task.isDone ? "line-through" : "none" }}
-        >
+        <ListItemText sx={{ textDecoration: status ? "line-through" : "none" }}>
           {title}
         </ListItemText>
       ) : (
@@ -94,7 +114,7 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
         onChange={handleEditTask}
         onKeyDown={(e) => e.preventDefault()}
       />
-      <IconButton onClick={() => deleteTask(task.id)}>
+      <IconButton onClick={handleRemoveTask}>
         <DeleteIcon />
       </IconButton>
     </ListItem>

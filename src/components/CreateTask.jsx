@@ -1,17 +1,26 @@
 import { Box, TextField, Button } from "@mui/material";
 import { useState } from "react";
+import { useToDoAPI } from "../hooks/useToDoApi";
 
 export const CreateTask = ({ addTask }) => {
+  const { createTask } = useToDoAPI();
   const [value, setValue] = useState("");
   const [error, setError] = useState(null);
-  const handleCreateTask = () => {
+  const handleCreateTask = async () => {
     if (!value.trim()) {
       setError("Опишите задачу");
       return;
     }
-    setError(null);
-    addTask(value);
-    setValue("");
+    try {
+      const res = await createTask(value.trim());
+      if (res.status === 201) {
+        setError(null);
+        addTask(res.data);
+        setValue("");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

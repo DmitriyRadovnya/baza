@@ -28,5 +28,30 @@ export const useToDoAPI = () => {
     }
   };
 
-  return { login, signUp, getTasks };
+  const createTask = async (title) => {
+    try {
+      const response = await api.post("/api/todos", { title });
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const changeTaskStatus = async (id) => {
+    try {
+      const response = await api.patch(`/api/todos/${id}/toggle`);
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeTask = async (id) => {
+    try {
+      const response = await api.delete(`/api/todos/${id}`);
+      return response.status;
+    } catch (error) {}
+  };
+
+  return { login, signUp, createTask, changeTaskStatus, removeTask, getTasks };
 };

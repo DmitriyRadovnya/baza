@@ -9,8 +9,8 @@ export const TaskList = ({
   deleteTask,
 }) => {
   const visibleTasks = tasks.filter((task) => {
-    if (filterMode === "active") return !task.isDone;
-    if (filterMode === "complete") return task.isDone;
+    if (filterMode === "active") return !task.completed;
+    if (filterMode === "complete") return task.completed;
     return true;
   });
   return (

@@ -2,23 +2,28 @@ import { useEffect, useState } from "react";
 import { CreateTask } from "./CreateTask";
 import { TaskList } from "./TaskList";
 import { FilterControl } from "./FilterControl";
-import { Box, Button } from "@mui/material";
+import { Box, Button, CircularProgress } from "@mui/material";
 import { useToDoAPI } from "../hooks/useToDoApi";
-import { idID } from "@mui/material/locale";
+import { Loader } from "./Loader";
 
 export const ToDo = () => {
   const [filterMode, setFilterMode] = useState("all");
   const [tasks, setTasks] = useState([]);
   const [hasLoaded, setHasLoaded] = useState(false);
   const { getTasks, removeTask } = useToDoAPI();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   useEffect(() => {
+    setIsLoading(true);
     const loadTasks = async () => {
       try {
         const response = await getTasks();
         if (response) setTasks(response.data);
       } catch (e) {
         console.error(e);
+      } finally {
+        setIsLoading(false);
       }
     };
     loadTasks();
@@ -67,6 +72,7 @@ export const ToDo = () => {
   const clearCompletedTasks = async () => {
     const taskForClear = tasks.filter((task) => task.completed);
     taskForClear.forEach(async ({ id }) => {
+      setIsDeleting(true);
       try {
         const res = await removeTask(id);
         if (res === 204) {
@@ -74,6 +80,8 @@ export const ToDo = () => {
         }
       } catch (error) {
         console.log(error);
+      } finally {
+        setIsDeleting(false);
       }
     });
   };
@@ -93,18 +101,32 @@ export const ToDo = () => {
         <Button
           variant="contained"
           onClick={clearCompletedTasks}
-          sx={{ textTransform: "none" }}
+          sx={{ textTransform: "none", position: "relative", minWidth: 100 }}
+          disabled={isDeleting}
         >
-          Удалить выполненные
+          <span style={{ visibility: isDeleting ? "hidden" : "visible" }}>
+            Удалить выполненные
+          </span>
+          {isDeleting && (
+            <CircularProgress
+              size={20}
+              color="inherit"
+              sx={{ position: "absolute" }}
+            />
+          )}
         </Button>
       </Box>
-      <TaskList
-        tasks={tasks}
-        filterMode={filterMode}
-        setComplete={setComplete}
-        editTask={editTask}
-        deleteTask={deleteTask}
-      />
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <TaskList
+          tasks={tasks}
+          filterMode={filterMode}
+          setComplete={setComplete}
+          editTask={editTask}
+          deleteTask={deleteTask}
+        />
+      )}
     </>
   );
 };

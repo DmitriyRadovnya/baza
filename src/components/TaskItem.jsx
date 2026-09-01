@@ -1,5 +1,6 @@
 import {
   Checkbox,
+  CircularProgress,
   IconButton,
   ListItem,
   ListItemText,
@@ -17,6 +18,8 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
   const [editMode, setEditMode] = useState(false);
   const [title, setTitle] = useState(task.title);
   const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const editInputRef = useRef();
 
   useEffect(() => {
@@ -49,6 +52,7 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
       return;
     }
     try {
+      setIsSaving(true);
       const status = await updateTitle(task.id, title.trim());
       if (status === 200) {
         editTask(task.id, title.trim());
@@ -57,6 +61,8 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsSaving(false);
     }
   };
 
@@ -73,12 +79,15 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
 
   const handleRemoveTask = async () => {
     try {
+      setIsLoading(true);
       const deleteStatus = await removeTask(task.id);
       if (deleteStatus === 204) {
         deleteTask(task.id);
       }
     } catch (error) {
       console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -89,6 +98,11 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
     setEditMode(false);
     setError(null);
     setTitle(task.title);
+  };
+
+  const renderIcon = () => {
+    if (isSaving) return <CircularProgress size={20} />;
+    return editMode ? <SaveIcon /> : <EditIcon />;
   };
 
   return (
@@ -116,13 +130,14 @@ export const TaskItem = ({ task, setComplete, editTask, deleteTask }) => {
 
       <Checkbox
         checked={editMode}
-        icon={<EditIcon />}
-        checkedIcon={<SaveIcon />}
+        icon={renderIcon()}
+        checkedIcon={renderIcon()}
         onChange={handleEditTask}
         onKeyDown={(e) => e.preventDefault()}
+        disabled={isSaving}
       />
       <IconButton onClick={handleRemoveTask}>
-        <DeleteIcon />
+        {isLoading ? <CircularProgress size={20} /> : <DeleteIcon />}
       </IconButton>
     </ListItem>
   );

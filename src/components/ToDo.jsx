@@ -37,13 +37,11 @@ export const ToDo = () => {
     }
   }, [tasks, hasLoaded]);
 
-  const addTask = ({ id, title, completed }) => {
+  const addTask = (data) => {
     setTasks((prev) => [
       ...prev,
       {
-        id,
-        title,
-        completed,
+        ...data,
         isVisible: true,
       },
     ]);

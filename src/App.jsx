@@ -5,11 +5,6 @@ import { LoginPage } from "./components/LoginPage";
 import { ToDo } from "./components/ToDo";
 import "./App.css";
 
-const Public = () => {
-  const isAuth = Boolean(localStorage.getItem("token"));
-  return isAuth ? <Navigate to="/" replace /> : <Outlet />;
-};
-
 const Protected = () => {
   const isAuth = Boolean(localStorage.getItem("token"));
   return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
@@ -19,10 +14,8 @@ function App() {
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route element={<Public />}>
-          <Route path="/register" element={<RegisterPage />}></Route>
-          <Route path="/login" element={<LoginPage />}></Route>
-        </Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
+        <Route path="/login" element={<LoginPage />}></Route>
         <Route element={<Protected />}>
           <Route index element={<ToDo />} />
         </Route>

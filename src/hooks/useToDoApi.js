@@ -46,7 +46,7 @@ export const useToDoAPI = () => {
     }
   };
 
-  const updateTitle = async (id, newTitle) => {
+  const updateTitle = async ({ id, newTitle }) => {
     try {
       const res = await api.patch(`/api/todos/${id}`, { title: newTitle });
       return res.status;

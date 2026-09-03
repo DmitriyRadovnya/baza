@@ -1,13 +1,7 @@
 import { List } from "@mui/material";
 import { TaskItem } from "./TaskItem";
 
-export const TaskList = ({
-  tasks,
-  filterMode,
-  setComplete,
-  editTask,
-  deleteTask,
-}) => {
+export const TaskList = ({ tasks, filterMode }) => {
   const visibleTasks = tasks.filter((task) => {
     if (filterMode === "active") return !task.completed;
     if (filterMode === "complete") return task.completed;
@@ -16,15 +10,7 @@ export const TaskList = ({
   return (
     <List>
       {visibleTasks.map((task) => {
-        return (
-          <TaskItem
-            key={task.id}
-            task={task}
-            setComplete={setComplete}
-            editTask={editTask}
-            deleteTask={deleteTask}
-          />
-        );
+        return <TaskItem key={task.id} task={task} />;
       })}
     </List>
   );

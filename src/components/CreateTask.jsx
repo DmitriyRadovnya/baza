@@ -1,31 +1,32 @@
 import { Box, TextField, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useToDoAPI } from "../hooks/useToDoApi";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-export const CreateTask = ({ addTask }) => {
+export const CreateTask = () => {
   const { createTask } = useToDoAPI();
   const [value, setValue] = useState("");
   const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const queryClient = useQueryClient();
+  const addNewTask = useMutation({
+    mutationFn: (title) => createTask(title),
+    onSuccess: (res) => {
+      if (res?.status === 201) {
+        setValue("");
+        setError(null);
+        // queryClient.invalidateQueries({ queryKey: ["tasks"] });
+        queryClient.setQueryData(["tasks"], (old) => [res.data, ...old]);
+      }
+    },
+    onError: (error) => setError(error),
+  });
 
   const handleCreateTask = async () => {
     if (!value.trim()) {
       setError("Опишите задачу");
       return;
     }
-    try {
-      setIsLoading(true);
-      const res = await createTask(value.trim());
-      if (res.status === 201) {
-        setError(null);
-        addTask(res.data);
-        setValue("");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
+    addNewTask.mutate(value.trim());
   };
 
   return (
@@ -59,13 +60,15 @@ export const CreateTask = ({ addTask }) => {
         variant="contained"
         sx={{ textTransform: "none", position: "relative", minWidth: 100 }}
         onClick={handleCreateTask}
-        disabled={isLoading}
+        disabled={addNewTask.isPending}
       >
-        <span style={{ visibility: isLoading ? "hidden" : "visible" }}>
+        <span
+          style={{ visibility: addNewTask.isPending ? "hidden" : "visible" }}
+        >
           Добавить
         </span>
 
-        {isLoading && (
+        {addNewTask.isPending && (
           <CircularProgress
             size={20}
             color="inherit"

@@ -11,15 +11,14 @@ import {
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { loginSchema } from "../validation/authSchemas";
-import { useToDoAPI } from "../hooks/useToDoApi";
-import { useNavigate, Link } from "react-router";
+import { Link } from "react-router";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { useAuth } from "../hooks/useAuth";
 
 export const LoginPage = () => {
   const [showPass, setShowPass] = useState();
-  const nav = useNavigate();
-  const { login } = useToDoAPI();
+  const { signIn } = useAuth();
   const {
     watch,
     handleSubmit,
@@ -37,12 +36,8 @@ export const LoginPage = () => {
     setShowPass((p) => !p);
   };
 
-  const onSubmit = async (data) => {
-    const token = await login(data);
-    if (token.access_token) {
-      localStorage.setItem("token", JSON.stringify(token));
-      nav("/");
-    }
+  const onSubmit = (data) => {
+    signIn.mutate(data);
   };
   return (
     <Box

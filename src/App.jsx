@@ -6,7 +6,7 @@ import { ToDo } from "./components/ToDo";
 import "./App.css";
 
 const Protected = () => {
-  const isAuth = Boolean(localStorage.getItem("token"));
+  const isAuth = Boolean(JSON.parse(localStorage.getItem("token")));
   return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
 };
 

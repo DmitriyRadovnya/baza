@@ -10,7 +10,7 @@ export const useToDoAPI = () => {
     }
   };
 
-  const signUp = async (userData) => {
+  const registration = async (userData) => {
     try {
       const response = await api.post("/api/auth/register", { ...userData });
       return response.data;
@@ -62,7 +62,7 @@ export const useToDoAPI = () => {
 
   return {
     login,
-    signUp,
+    registration,
     createTask,
     updateTitle,
     changeTaskStatus,

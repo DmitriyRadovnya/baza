@@ -16,15 +16,15 @@ import {
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "../validation/authSchemas";
-import { useToDoAPI } from "../hooks/useToDoApi";
-import { Link, useNavigate } from "react-router";
+import { Link } from "react-router";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
+import { useAuth } from "../hooks/useAuth";
 
 export const RegisterPage = () => {
   const [showPass, setShowPass] = useState(false);
-  const { signUp } = useToDoAPI();
-  const nav = useNavigate();
+  const { signUp } = useAuth();
+
   const {
     control,
     watch,
@@ -52,12 +52,7 @@ export const RegisterPage = () => {
       password: data.password,
       name: data.login,
     };
-    const token = await signUp(user);
-    console.log(token);
-    if (token.access_token) {
-      localStorage.setItem("token", JSON.stringify(token));
-      nav("/");
-    }
+    signUp.mutate(user);
   };
   return (
     <Box

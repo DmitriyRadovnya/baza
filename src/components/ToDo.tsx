@@ -6,17 +6,23 @@ import { Box, Button, CircularProgress } from "@mui/material";
 import { Loader } from "./Loader.js";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useToDoAPI } from "../hooks/useToDoApi.js";
-import { Task } from "../hooks/types.js";
+import { ApiErrorPayload, Task } from "../hooks/types.js";
+import { AxiosError } from "axios";
+import { getErrorMessage } from "../utils/getErrorMessage.js";
 
 export const ToDo = () => {
   const [filterMode, setFilterMode] = useState<FilterMode>(FilterMode.ALL);
   const { getTasks, removeTask } = useToDoAPI();
   const queryClient = useQueryClient();
 
-  const { data: tasks, isPending } = useQuery<Task[], Error>({
+  const {
+    data: tasks = [],
+    isPending,
+    isError,
+    error,
+  } = useQuery<Task[], AxiosError<ApiErrorPayload>>({
     queryKey: ["tasks"],
     queryFn: getTasks,
-    initialData: [],
   });
 
   const clearCompleted = useMutation<void, Error, number[]>({
@@ -36,6 +42,8 @@ export const ToDo = () => {
       .map((task: Task) => task.id);
     if (taskForClear.length) clearCompleted.mutate(taskForClear);
   };
+
+  if (isError) return <p>{getErrorMessage(error)}</p>;
 
   return (
     <>

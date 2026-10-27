@@ -21,3 +21,5 @@ export type RenameRequest = {
   id: number;
   newTitle: string;
 };
+
+export type ApiErrorPayload = { message: string };

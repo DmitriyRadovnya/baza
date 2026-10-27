@@ -15,11 +15,11 @@ import {
 } from "@mui/material";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { registerSchema } from "../validation/authSchemas";
+import { RegisterData, registerSchema } from "../validation/authSchemas.js";
 import { Link } from "react-router";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
 import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth.js";
 
 export const RegisterPage = () => {
   const [showPass, setShowPass] = useState(false);
@@ -34,7 +34,7 @@ export const RegisterPage = () => {
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      login: "",
+      name: "",
       email: "",
       password: "",
       gender: "",
@@ -46,13 +46,8 @@ export const RegisterPage = () => {
     setShowPass((p) => !p);
   };
 
-  const onSubmit = async (data) => {
-    const user = {
-      email: data.email,
-      password: data.password,
-      name: data.login,
-    };
-    signUp.mutate(user);
+  const onSubmit = async (data: RegisterData) => {
+    signUp.mutate(data);
   };
   return (
     <Box
@@ -72,15 +67,13 @@ export const RegisterPage = () => {
     >
       <FormLabel>Регистрация</FormLabel>
       <TextField
-        name="login"
         label="Логин"
         placeholder="Придумайте логин"
-        {...register("login")}
-        error={!!errors.login}
-        helperText={errors.login?.message}
+        {...register("name")}
+        error={!!errors.name}
+        helperText={errors.name?.message}
       />
       <TextField
-        name="email"
         label="Почта"
         placeholder="Введите почту"
         {...register("email")}
@@ -88,7 +81,6 @@ export const RegisterPage = () => {
         helperText={errors.email?.message}
       />
       <TextField
-        name="password"
         label="Пароль"
         type={showPass ? "text" : "password"}
         placeholder="Придумайте пароль"
@@ -132,7 +124,6 @@ export const RegisterPage = () => {
         )}
       />
       <TextField
-        name="age"
         label="Возраст"
         placeholder="Введите возраст"
         type="number"

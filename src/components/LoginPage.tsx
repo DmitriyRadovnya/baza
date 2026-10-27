@@ -10,14 +10,14 @@ import {
 } from "@mui/material";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { loginSchema } from "../validation/authSchemas";
+import { LoginData, loginSchema } from "../validation/authSchemas.js";
 import { Link } from "react-router";
 import { useState } from "react";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { useAuth } from "../hooks/useAuth";
+import { useAuth } from "../hooks/useAuth.js";
 
 export const LoginPage = () => {
-  const [showPass, setShowPass] = useState();
+  const [showPass, setShowPass] = useState<boolean>(false);
   const { signIn } = useAuth();
   const {
     watch,
@@ -36,7 +36,7 @@ export const LoginPage = () => {
     setShowPass((p) => !p);
   };
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: LoginData) => {
     signIn.mutate(data);
   };
   return (
@@ -57,7 +57,6 @@ export const LoginPage = () => {
     >
       <FormLabel>Вход</FormLabel>
       <TextField
-        name="email"
         label="Почта"
         placeholder="Введите почту"
         {...register("email")}
@@ -66,7 +65,6 @@ export const LoginPage = () => {
         sx={{ width: "100%" }}
       />
       <TextField
-        name="password"
         label="Пароль"
         type={showPass ? "text" : "password"}
         placeholder="Придумайте пароль"

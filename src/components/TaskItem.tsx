@@ -9,15 +9,21 @@ import {
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import SaveIcon from "@mui/icons-material/Save";
-import { useRef, useState, useEffect } from "react";
-import { useTaskItem } from "../hooks/useTaskItem";
+import { useRef, useState, useEffect, FC } from "react";
+import { useTaskItem } from "../hooks/useTaskItem.js";
+import { Task } from "../hooks/types.js";
+import type { FocusEvent, KeyboardEvent } from "react";
 
-export const TaskItem = ({ task }) => {
+type TaskItemProps = {
+  task: Task;
+};
+
+export const TaskItem: FC<TaskItemProps> = ({ task }) => {
   const { renameTask, changeStatus, deleteTask } = useTaskItem();
-  const [editMode, setEditMode] = useState(false);
-  const [title, setTitle] = useState(task.title);
-  const [error, setError] = useState(null);
-  const editInputRef = useRef();
+  const [editMode, setEditMode] = useState<boolean>(false);
+  const [title, setTitle] = useState<string>(task.title);
+  const [error, setError] = useState<string | null>(null);
+  const editInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setTitle(task.title);
@@ -47,7 +53,7 @@ export const TaskItem = ({ task }) => {
     exitEdit();
   };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = (e: KeyboardEvent<HTMLDivElement>) => {
     if (e.key === "Enter") {
       e.preventDefault();
       saveEdit();
@@ -56,7 +62,9 @@ export const TaskItem = ({ task }) => {
     }
   };
 
-  const handleClickOut = (e) => {
+  const handleClickOut = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement, Element>,
+  ) => {
     if (
       e.relatedTarget &&
       e.relatedTarget.closest("button, input[type=checkbox]")

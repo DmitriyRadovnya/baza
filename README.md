@@ -1,16 +1,47 @@
-# React + Vite
+# React + Vite + TS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Ключевые типы
 
-Currently, two official plugins are available:
+```typescript
+export type AuthResponse = {
+  access_token: string;
+};
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+export type Task = {
+  id: number;
+  title: string;
+  completed: boolean;
+};
 
-## React Compiler
+export type TaskResponse = {
+  status: number;
+  data: Task;
+};
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+export type RenameRequest = {
+  id: number;
+  newTitle: string;
+};
 
-## Expanding the ESLint configuration
+export enum FilterMode {
+  ALL = "all",
+  ACTIVE = "active",
+  COMPLETE = "complete",
+}
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+type FilterControlProps = {
+  filterMode: FilterMode;
+  setFilterMode: Dispatch<SetStateAction<FilterMode>>;
+};
+
+export type TaskListProps = {
+  tasks: Task[];
+  filterMode: FilterMode;
+};
+```
+
+## Как обновляется список задач после mutation:
+
+1. Вызываю мутацию
+2. Обращаюсь к серверу, при ответе OK срабатывает onSuccess
+3. TanStack делает refetch и обновляет данные

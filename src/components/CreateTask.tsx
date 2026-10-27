@@ -1,24 +1,28 @@
 import { Box, TextField, Button, CircularProgress } from "@mui/material";
 import { useState } from "react";
-import { useToDoAPI } from "../hooks/useToDoApi";
+import { useToDoAPI } from "../hooks/useToDoApi.js";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Task } from "../hooks/types.js";
 
 export const CreateTask = () => {
   const { createTask } = useToDoAPI();
-  const [value, setValue] = useState("");
-  const [error, setError] = useState(null);
+  const [value, setValue] = useState<string>("");
+  const [error, setError] = useState<string | null>(null);
   const queryClient = useQueryClient();
   const addNewTask = useMutation({
-    mutationFn: (title) => createTask(title),
+    mutationFn: createTask,
     onSuccess: (res) => {
       if (res?.status === 201) {
         setValue("");
         setError(null);
         // queryClient.invalidateQueries({ queryKey: ["tasks"] });
-        queryClient.setQueryData(["tasks"], (old) => [res.data, ...old]);
+        queryClient.setQueryData(["tasks"], (old: Task[]) => [
+          res.data,
+          ...old,
+        ]);
       }
     },
-    onError: (error) => setError(error),
+    onError: (error) => setError(error.message),
   });
 
   const handleCreateTask = async () => {

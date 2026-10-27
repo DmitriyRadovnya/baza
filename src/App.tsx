@@ -1,13 +1,19 @@
 import { Routes, Route, Navigate, Outlet } from "react-router";
-import { Layout } from "./components/Layout";
+
+import "./App.css";
 import { RegisterPage } from "./components/RegisterPage";
+import { Layout } from "./components/Layout";
 import { LoginPage } from "./components/LoginPage";
 import { ToDo } from "./components/ToDo";
-import "./App.css";
 
 const Protected = () => {
-  const isAuth = Boolean(JSON.parse(localStorage.getItem("token")));
-  return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
+  const raw = localStorage.getItem("token");
+  console.log(raw);
+  if (raw) {
+    const isAuth = Boolean(raw);
+    return isAuth ? <Outlet /> : <Navigate to="/register" replace />;
+  }
+  return <Navigate to="/register" replace />;
 };
 
 function App() {
